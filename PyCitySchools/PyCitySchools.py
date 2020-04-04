@@ -216,3 +216,107 @@ del school_perf_df['Pass Read/Math']
 del school_perf_df['type']
 
 print(school_perf_df)
+
+
+schoolGroupx = school_data_complete.groupby(['school_name'])
+schoolGroup3 = schoolGroupx['Student ID'].count()
+school_size_df= pd.DataFrame(schoolGroup3)
+
+school_size_df["Average Reading Score"] = schoolGroup1["Avg Reading"]
+school_size_df["Average Math Score"] = schoolGroup1["Avg Math"]
+school_size_df['pass reading'] = schoolGroup1['pass reading']
+school_size_df['% Passing Math'] = schoolGroup1['pass math']
+
+
+both_pass2 = school_data_complete.loc[(school_data_complete['reading_score'] > 70) & (school_data_complete['math_score'] > 70)]
+both_pass2 = both_pass2.groupby(['school_name']).count()
+
+school_size_df['% Overall Passing'] = (both_pass2['reading_score']/schoolGroup3)*100
+school_size_df['% Overall Passing'] = school_size_df['% Overall Passing'].map("{:.2f}".format)
+
+bins = [0, 1000, 2000, 5000]
+group_labels = ["Small (<1000)", "Medium (1000-2000)", "Large (2000-5000)"]
+school_size_df['School Size'] = pd.cut(schoolGroup3, bins, labels=group_labels, include_lowest=True)
+
+#del school_size_df['school_name']
+
+print(school_size_df)
+
+school_type = pd.DataFrame(school_data_complete)
+
+bins = [0, 1]
+
+# Create the names for the five bins
+group_names = ["District", "Charter"]
+school_type["School Type"] = pd.cut(school_type["type"], bins, labels=group_names, include_lowest=True)
+
+print(school_type)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# #schoolGroupx = schoolGroupx['Student ID'].count()
+ 
+# school_perf_df= pd.DataFrame(school_data_complete)
+# school_perf_df['Budget Per Student'] = schoolGroup1['Budget Per Student']
+# budget = school_perf_df['Budget Per Student']
+# budget = budget.astype(float)
+# bins = [0, 584, 629, 644, 675]
+# group_labels = ["$0-$584", "$585-$629", "$630-$644", "$645-$675"]
+# school_perf_df["Spending Groups"] = pd.cut(budget, bins, labels=group_labels, include_lowest=True)
+# school_perf_df = school_perf_df.groupby(["Spending Groups"])
+# school_perf_df1 = pd.DataFrame(school_perf_df)
+# #sum1 = pd.to_numeric(sum1)
+# # school_perf_df['pass math'] = school_perf_df['pass math'].map("{:.4}".format)
+# # school_perf_df['pass reading'] = school_perf_df['pass reading'].map("{:.4}".format)
+# # school_perf_df['Pass Read/Math'] = school_perf_df['Pass Read/Math'].map("{:.2f}".format)
+# # pass_math_read = school_perf_df['Pass Read/Math']
+# # pass_math_read = pass_math_read.astype(float)
+
+
+# # both_pass = school_data_complete.loc[(school_data_complete['reading_score'] > 70) & (school_data_complete['math_score'] > 70)]
+# # both_pass = both_pass.groupby(['school_name']).count()
+# # schoolGroup1['Pass Read/Math'] = (both_pass['reading_score']/schoolGroup1['Student Count'])*100
+
+# # #
+# # school_perf_df['Avg Passing'] = sums.map("{:.3}".format)
+# # school_perf_df['Budget Per Student'] = budget.map("{:.4}".format)
+# # school_perf_df['Percent Pass math'] = school_perf_df['pass math']
+# # school_perf_df['Percent Pass Reading'] = school_perf_df['pass reading']
+
+# # del school_perf_df['type']
+# # del school_perf_df['Budget Per Student']
+# # del school_perf_df['pass math']
+# # del school_perf_df['pass reading']
+# # del school_perf_df['Student ID']
+# # del school_perf_df['student_name']
+# # del school_perf_df['gender']
+# # del school_perf_df['grade']
+# # del school_perf_df['school_name']
+# # del school_perf_df['budget']
+# # del school_perf_df['School ID']
+# # #Average math Score, Correct
+# school_perf_df1['Avg Math'] = school_perf_df["math_score"]
+# school_perf_df1["Avg Math"] = school_perf_df1["Avg Math"].astype(float).map("{:.2f}".format)
+
+# # #Average Reading Score, Correct
+# school_perf_df1['Avg Reading'] = school_perf_df["reading_score"].mean()
+# school_perf_df1["Avg Reading"] = school_perf_df1["Avg Reading"].astype(float).map("{:.2f}".format)
+
+
+# # school_perf_df['Avg Passing'] = school_perf_df['Avg Passing'].max()
+
+# # school_perf_df['Percent Pass math'] = school_perf_df['Percent Pass math'].max()
+# # school_perf_df['Percent Pass Reading'] = school_perf_df['Percent Pass Reading'].max()
+
+# school_perf_df1
